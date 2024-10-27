@@ -7,15 +7,16 @@ function App() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch("http://localhost:5041/actors", {
-          method: "GET",
-        });
+        const response = await fetch("http://localhost:5041/actors");
+        if (response.status >= 400) {
+          setErr("Server error");
+          return;
+        }
+
         const actorsArr = await response.json();
-        await new Promise((res) => setTimeout(() => res(), 500));
         setActors(actorsArr);
       } catch (err) {
         setErr(err);
-        console.log(err);
       }
     })();
   }, []);
